@@ -2,14 +2,67 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Hello World!</title>
+    <title>Sample Player</title>
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <p>Welcome to your Electron application.</p>
-    <button id="openFolder">Open</button>
-    <p id="info"></p>
+    <h1>Sample Player</h1>
+    <p>Click File-Open Folder, to start</p>
+    <main>
+    </main>
+    <footer><p>©2025</p></footer>
   </body>
   <script src="./xd.js"></script>
 </html>
+<style>
+  body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 95vh;
+    overflow-y: hidden;
+  }
+  main{
+    display: grid;
+    gap: 3rem;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: 300px 300px 300px;
+  }
+
+  div{
+    background-color: #1111;
+    border-radius: 16px;
+    backdrop-filter: blur(16px);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 15px;
+    padding: 10px;
+  }
+
+  button{
+    background-color: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .bottomSection{
+    display: flex;
+    justify-content: end;
+  }
+
+  #playPause{
+    transition: all 0.25s ease;
+    scale: 100%;
+  }
+
+  #playPause:hover{
+    scale: 120%;
+  }
+
+  footer{
+    margin-top: auto;
+  }
+</style>
+<template id="player">
+   
+</template>

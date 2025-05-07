@@ -1,7 +1,20 @@
-const { app, Menu, dialog, ipcRenderer  } = require("electron")
+const { app, BrowserWindow, Menu, dialog, ipcRenderer  } = require("electron")
 var fs = require('fs');
-const fileList = [];
+let fileList = [];
+let selectedFolder = "";
 
+
+const createWindowhelp = () => {
+  // Create the browser window.
+  const mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+  });
+  setMainMenu(mainWindow);
+
+  // and load the index.html of the app.
+  mainWindow.loadURL('https://github.com/turbocat009')
+};
 
 const setMainMenu = (mainWindow) => {
     
@@ -28,28 +41,41 @@ const setMainMenu = (mainWindow) => {
         {
           label: 'File',
           submenu: [
-            { label: 'Open', accelerator: isMac? "Cmd+O" : "Ctrl+O", click:()=>{
+            {
+              label: 'Open Folder',
+              accelerator: isMac ? "Cmd+O" : "Ctrl+O",
+              click: () => {
                 dialog.showOpenDialog(mainWindow, {
-                    properties:["openDirectory"],
-                }).then((result)=>{
-                     const {canceled} = result;
-                    if(!canceled){
-                        const selectedFolder = result.filePaths[0];
-                        console.log(selectedFolder);
-                        fs.readdir(selectedFolder, (err, files) => {
-                          files.forEach(file => {
-                            if (file.endsWith('.mp3') || file.endsWith('.wav') || file.endsWith('.m4a')) {
-                              fileList.push(file);
-                              console.log(fileList);
-                            }
-                          });
-                          mainWindow.webContents.send('update-file-list', fileList);
-                    })
-                    }
-                }).catch((err) =>{
-                    console.log(err);
+                  properties: ["openDirectory"],
+                }).then((result) => {
+                  const { canceled } = result;
+                  if (!canceled) {
+                    selectedFolder = result.filePaths[0]; // Assign selectedFolder
+                    console.log(selectedFolder);
+
+                    // Send selectedFolder to the renderer process
+
+                    fileList = [];
+                    fs.readdir(selectedFolder, (err, files) => {
+                      files.forEach(file => {
+                        if (file.endsWith('.mp3') || file.endsWith('.wav') || file.endsWith('.m4a')) {
+                          fileList.push(file);
+                          console.log(fileList);
+                        }
+                      });
+
+                      // Send updated fileList to the renderer process
+                      mainWindow.webContents.send('update-file-list', fileList);
+                      mainWindow.webContents.send('selected-folder', selectedFolder);
+                      console.log('Sent selected-folder event with:', selectedFolder);
+
+                    });
+                  }
+                }).catch((err) => {
+                  console.log(err);
                 });
-            }},
+              }
+            },
             { type: 'separator'},
             isMac ? { role: 'close' } : { role: 'quit' }
           ]
@@ -64,25 +90,6 @@ const setMainMenu = (mainWindow) => {
             { role: 'cut' },
             { role: 'copy' },
             { role: 'paste' },
-            ...(isMac
-              ? [
-                  { role: 'pasteAndMatchStyle' },
-                  { role: 'delete' },
-                  { role: 'selectAll' },
-                  { type: 'separator' },
-                  {
-                    label: 'Speech',
-                    submenu: [
-                      { role: 'startSpeaking' },
-                      { role: 'stopSpeaking' }
-                    ]
-                  }
-                ]
-              : [
-                  { role: 'delete' },
-                  { type: 'separator' },
-                  { role: 'selectAll' }
-                ])
           ]
         },
         // { role: 'viewMenu' }
@@ -129,7 +136,27 @@ const setMainMenu = (mainWindow) => {
               }
             },
             {
-                label: 'About'
+                label: 'About',
+                click: async () => {
+                  createWindowhelp()
+                }
+            },
+            {
+              type: 'separator'
+            },
+            {
+              label: 'GitHub of the creator',
+              click: async () => {
+                const { shell } = require('electron')
+                await shell.openExternal('https://github.com/turbocat009')
+              }
+            }, 
+            {
+              label: 'GitHub Repository',
+              click: async () => {
+                const { shell } = require('electron')
+                await shell.openExternal('https://github.com/turbocat009/my-app')
+              }
             }
           ]
         }
