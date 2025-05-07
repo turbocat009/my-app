@@ -36,7 +36,9 @@ const setMainMenu = (mainWindow) => {
                         console.log(selectedFolder);
                         fs.readdir(selectedFolder, (err, files) => {
                           files.forEach(file => {
-                            console.log(file);
+                            if (file.endsWith('.mp3') || file.endsWith('.wav') || file.endsWith('.m4a')) {
+                              console.log(file);
+                            }
                           });
                     })
                     }
