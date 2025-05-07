@@ -1,5 +1,7 @@
-const { app, Menu, dialog } = require("electron")
+const { app, Menu, dialog, ipcRenderer  } = require("electron")
 var fs = require('fs');
+const fileList = [];
+
 
 const setMainMenu = (mainWindow) => {
     
@@ -37,9 +39,11 @@ const setMainMenu = (mainWindow) => {
                         fs.readdir(selectedFolder, (err, files) => {
                           files.forEach(file => {
                             if (file.endsWith('.mp3') || file.endsWith('.wav') || file.endsWith('.m4a')) {
-                              console.log(file);
+                              fileList.push(file);
+                              console.log(fileList);
                             }
                           });
+                          mainWindow.webContents.send('update-file-list', fileList);
                     })
                     }
                 }).catch((err) =>{

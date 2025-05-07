@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const { setMainMenu } = require('./menu.js')
 const path = require('node:path');
 
