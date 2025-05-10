@@ -46,6 +46,13 @@
     cursor: pointer;
   }
 
+  .topSection{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin-left: 5px;
+  }
+
   .bottomSection{
     display: flex;
     justify-content: end;
@@ -54,15 +61,29 @@
   #playPause{
     transition: all 0.25s ease;
     scale: 100%;
+    background-color: none;
   }
 
   #playPause:hover{
     scale: 130%;
   }
 
+  #fileName{
+    width: 150px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  #volume{
+    width: 80px;
+  }
+
+
   footer{
     margin-top: auto;
   }
+
 </style>
 <template id="player">
    
