@@ -1,3 +1,4 @@
+
 const main = document.querySelector('main')
 
 // Listen for updates to the fileList from the main process
@@ -16,7 +17,9 @@ window.electron.ipcRenderer.on('update-file-list', (event, fileList) => {
       </button>
     </section>
     <section class="bottomSection">
-      <p class=info></p>
+      <button id=changekey>
+        change Key
+      </button>
       <button id="playPause">
         <img src="./Images/play.svg" alt="Image of Button" width="20px" height="20px">
           <audio>
@@ -30,7 +33,9 @@ window.electron.ipcRenderer.on('update-file-list', (event, fileList) => {
       const img = playPause.querySelector('img')
       const volume = elem.querySelector('input');
       const audio = playPause.querySelector("audio");
+      const changeKey = elem.querySelector("#changekey")
       let play = false;
+      let pressed
 
       volume.addEventListener("input", () => {
         console.log(`New volume: ${volume.value}`);
@@ -47,24 +52,54 @@ window.electron.ipcRenderer.on('update-file-list', (event, fileList) => {
           audio.play();
           img.src = "./Images/pause.svg"
           play = true;
-
         }
       });
-      const info = elem.querySelector(".info")
-      file.key = asignKey(); // Assign a key based on the file name
-      
+      changeKey.addEventListener("click", () => {
+        const keyHandler = (event) => {
+          assignedKey = event.key;
+          file.key = asignKey();
+          changeKey.innerHTML = file.key;
+          document.removeEventListener("keydown", keyHandler);
+        };
+        document.addEventListener("keydown", keyHandler);
+      });
+
+      document.addEventListener("keydown", function(event) {
+        if(event.key === changeKey.innerHTML){
+          if (play) {
+            audio.pause();
+            img.src = "./Images/play.svg"
+            play = false;
+          } else {
+            audio.currentTime = 0;
+            audio.play();
+            img.src = "./Images/pause.svg"
+            play = true;
+          }
+        }
+
+      });
+
+
+      main.append(elem);
       
 
-      info.innerHTML = file.key;
-      main.append(elem);
+    
+    
     });
   });
 });
 
 
+let assignedKey = 's';
+let oldKey = 's'
+
 function asignKey() {
-  const key = "S" // Use the first character of the file name as the key
-  console.log(key);
-  return key;
+  if (assignedKey !== 'Escape' && assignedKey !== 'Meta' && assignedKey !== 'Control' && assignedKey !== 'Alt' && assignedKey !== 'Enter' && assignedKey !== 'CapsLock' && assignedKey !== 'Tab' && assignedKey !== 'Shift') {
+    console.log(assignedKey);
+    oldKey = assignedKey;
+    return assignedKey;
+  } 
+  return oldKey;// Return null if the key is Escape or Meta
 }
 
