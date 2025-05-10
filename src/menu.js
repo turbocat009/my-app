@@ -1,19 +1,21 @@
 const { app, BrowserWindow, Menu, dialog, ipcRenderer  } = require("electron")
+const path = require('node:path');
+
 var fs = require('fs');
 let fileList = [];
 let selectedFolder = "";
 
 
-const createWindowhelp = () => {
+const createWindowAbout = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 500,
+    height: 200,
   });
   setMainMenu(mainWindow);
 
   // and load the index.html of the app.
-  mainWindow.loadURL('https://github.com/turbocat009')
+  mainWindow.loadFile(path.join(__dirname, 'about.html'));
 };
 
 const setMainMenu = (mainWindow) => {
@@ -25,7 +27,12 @@ const setMainMenu = (mainWindow) => {
           ? [{
               label: app.name,
               submenu: [
-                { role: 'about' },
+                {
+                  label: 'About Sample Player',
+                  click: async () => {
+                    createWindowAbout()
+                  }
+                },
                 { type: 'separator' },
                 { role: 'services' },
                 { type: 'separator' },
@@ -133,20 +140,20 @@ const setMainMenu = (mainWindow) => {
               click: async () => {
                 const { shell } = require('electron')
                 await shell.openExternal('https://electronjs.org')
-              }
-            },
-            {
+                }
+              },
+              !isMac ? {
                 label: 'About',
                 click: async () => {
-                  createWindowhelp()
+                  createWindowAbout()
                 }
-            },
-            {
-              type: 'separator'
-            },
-            {
-              label: 'GitHub of the creator',
-              click: async () => {
+              } : { role: 'toggleSpellChecker' },
+              {
+                type: 'separator'
+              },
+              {
+                label: 'GitHub of the creator',
+                click: async () => {
                 const { shell } = require('electron')
                 await shell.openExternal('https://github.com/turbocat009')
               }
