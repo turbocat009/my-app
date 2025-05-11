@@ -9,24 +9,31 @@ window.electron.ipcRenderer.on('update-file-list', (event, fileList) => {
       const file = { name: fileName };
       let elem = document.createElement('div');
       elem.innerHTML = `
-    <section class="topSection">
-      <p id="fileName">${file.name}</p>
-      <input id="volume" max="100" min="0" value="100" type="range">
-      <button id="options">
-        <img src="./Images/config.svg" alt="Image of config" width="25px" height="25px" rotate="90">
-      </button>
-    </section>
-    <section class="bottomSection">
-      <button id=changekey>
-        change Key
-      </button>
-      <button id="playPause">
-        <img src="./Images/play.svg" alt="Image of Button" width="20px" height="20px">
-          <audio>
-            <source id="audioSource" src="${selectedFolder}/${file.name}" type="audio/mpeg">
-          </audio>
-      </button>
-    </section>
+            <section class="topSection">
+          <p id="fileName">${file.name}</p>
+          <input id="volume" max="100" min="0" value="100" type="range">
+          <button id="options">
+            <img src="./Images/config.svg" alt="Image of config" width="25px" height="25px" rotate="90">
+          </button>
+            
+        </section>
+        <section class="bottomSection">
+          <button id=changekey>
+            change Key
+          </button>
+          <button id="playPause">
+            <img src="./Images/play.svg" alt="Image of Button" width="20px" height="20px">
+            <audio>
+              <source id="audioSource" src="${selectedFolder}/${file.name}" type="audio/mpeg">
+            </audio>
+          </button>
+        </section>
+        <ul id="menu" class="none">
+          <span></span>
+          <li>Color</li>
+          <li>Settings</li>
+          <span></span>
+        </ul>
     `;
 
       const playPause = elem.querySelector('#playPause');
@@ -34,8 +41,12 @@ window.electron.ipcRenderer.on('update-file-list', (event, fileList) => {
       const volume = elem.querySelector('input');
       const audio = playPause.querySelector("audio");
       const changeKey = elem.querySelector("#changekey")
+      const menu = elem.querySelector('#menu')
+      const menuBtn = elem.querySelector('#options')
+
       let play = false;
       let pressed
+      let configMenu = false;
 
       volume.addEventListener("input", () => {
         console.log(`New volume: ${volume.value}`);
@@ -54,6 +65,9 @@ window.electron.ipcRenderer.on('update-file-list', (event, fileList) => {
           play = true;
         }
       });
+
+      //Things for keys
+
       changeKey.addEventListener("click", () => {
         const keyHandler = (event) => {
           assignedKey = event.key;
@@ -80,11 +94,19 @@ window.electron.ipcRenderer.on('update-file-list', (event, fileList) => {
 
       });
 
+      //Open Menu Config
+
+      menuBtn.addEventListener("click", ()=>{
+        if(configMenu){
+          menu.classList.add("none")
+          configMenu = false;
+        } else{
+          menu.classList.remove("none")
+          configMenu = true;
+        }
+      })
 
       main.append(elem);
-      
-
-    
     
     });
   });

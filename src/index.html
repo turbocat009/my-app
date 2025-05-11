@@ -25,7 +25,7 @@
   }
   main{
     display: grid;
-    gap: 3rem;
+    gap: 5rem;
     justify-content: center;
     align-items: center;
     grid-template-columns: 300px 300px 300px;
@@ -38,6 +38,7 @@
     backdrop-filter: blur(16px);
     box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 15px;
     padding: 10px;
+    z-index: 10;
   }
 
   button{
@@ -46,11 +47,16 @@
     cursor: pointer;
   }
 
+  .none{
+    display: none;
+  }
+
   .topSection{
     display: flex;
     flex-direction: row;
     gap: 1rem;
     margin-left: 5px;
+    position: relative;
   }
 
   .bottomSection{
@@ -88,6 +94,72 @@
 
   footer{
     margin-top: auto;
+  }
+
+  ul{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    list-style: none;
+    right: -70px;
+    top: 15px;
+    gap: 0.5rem;
+    background-color: #ffffff78;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 15px;
+    backdrop-filter: blur(16px);
+    padding: 9px 0px;
+    border-radius: 16px;
+    z-index: 1000 ;
+  }
+
+  li{
+        padding: 2px 10px;
+  }
+
+  li:hover{
+    background-color: #1111;
+  }
+
+
+  #options{
+    padding-right: 0px;
+  }
+
+  @media (max-width: 1275px) {
+    main{
+      display: grid;
+      gap: 5rem;
+      justify-content: center;
+      align-items: center;
+      grid-template-columns: 300px 300px;
+      padding-bottom: 10px;
+    }
+  }
+
+  @media (max-width: 820px) {
+    main{
+      display: grid;
+      gap: 5rem;
+      justify-content: center;
+      align-items: center;
+      grid-template-columns: 300px;
+      padding-bottom: 10px;
+    }
+  }
+
+
+  @keyframes openConfigMenu {
+    0%{
+      width: 0px;
+      height: 0px;
+    } 
+    50%{
+      width: 80px;
+    } 
+    100%{
+      width: 80px;
+      height: 70px;
+    }
   }
 
 </style>
