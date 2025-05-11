@@ -3,9 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About</title>
+    <title>About the app</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: start;
+            align-items: start;
+            height: 500px;
+            background-color: #f4f4f4;
+            overflow: hidden;
+        }
+
+        .about-window {
+            width: 500px;
+            height: 200px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .about-header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            padding-bottom: 50px;
+        }
+
+        .about-content {
+            font-size: 14px;
+            color: #555;
+            position: relative;
+        }
+
+        .about-content span {
+            font-size: 12px;
+            color: #777;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+    </style>
 </head>
 <body>
-    About
+    <div class="about-window">
+        <div class="about-header">Sample Player</div>
+        <div class="about-content">
+            Version: 1.0.0<br>
+            An app to play audio samples easily.<br>
+            © 2025 CucaStudios <span>All rights reserved.</span>
+        </div>
+    </div>
 </body>
 </html>
